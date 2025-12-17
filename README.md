@@ -112,7 +112,7 @@ This feedback is:
 ---
 ## 📸 Project Demo
 
-refer to images folder 
+refer to project-demo-images folder 
 
 
 
