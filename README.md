@@ -112,11 +112,7 @@ This feedback is:
 ---
 ## 📸 Project Demo
 
-### Gradio Interface
-![Gradio Interface](images/gradio_ui.jpg)
-
-### Sample Output
-![Sample Output](images/sample_output.jpg)
+refer to images folder 
 
 
 
