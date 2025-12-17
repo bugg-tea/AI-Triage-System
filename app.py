@@ -8,10 +8,10 @@ Original file is located at
 """
 
 from google.colab import drive
-drive.mount('/content/drive')
+drive.mount('add your drive link')
 
 import os
-os.listdir('/content/drive/MyDrive/AI_Triage_Project')
+os.listdir('add drive link to project folder')
 
 !pip install pandas numpy tqdm nltk sentence-transformers pypdf
 
@@ -21,7 +21,7 @@ nltk.download('punkt')
 import pandas as pd
 
 patients = pd.read_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/data//PATIENTS.csv'
+    'PATIENTS.csv'
 )
 
 patients.head()
@@ -32,12 +32,12 @@ patients.dropna(inplace=True)
 patients['DOB'] = pd.to_datetime(patients['DOB'])
 
 patients.to_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/processed/patients_clean.csv',
+    'processed/patients_clean.csv',
     index=False
 )
 
 admissions = pd.read_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/data/ADMISSIONS.csv'
+    'data/ADMISSIONS.csv'
 )
 
 admissions = admissions[
@@ -49,18 +49,18 @@ admissions['ADMITTIME'] = pd.to_datetime(admissions['ADMITTIME'])
 admissions = admissions[admissions['ADMISSION_TYPE'] != 'ELECTIVE']
 
 admissions.to_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/admissions_clean.csv',
+    'processed/mimic_clean/admissions_clean.csv',
     index=False
 )
 
 notes = pd.read_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/data//NOTEEVENTS.csv'
+    'data//NOTEEVENTS.csv'
 )
 
 notes.head()
 
 notes = pd.read_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/data/NOTEEVENTS.csv',
+    'data/NOTEEVENTS.csv',
     usecols=['SUBJECT_ID', 'HADM_ID', 'CHARTTIME', 'CATEGORY', 'TEXT'],
     low_memory=False
 )
@@ -77,13 +77,13 @@ notes.dropna(subset=['TEXT'], inplace=True)
 notes = notes[~notes['TEXT'].str.lower().str.contains('discharge summary')]
 
 notes.to_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/notes_clean.csv',
+    'processed/mimic_clean/notes_clean.csv',
     index=False
 )
 
-patients = pd.read_csv('/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/patients_clean.csv')
-admissions = pd.read_csv('/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/admissions_clean.csv')
-notes = pd.read_csv('/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/notes_clean.csv')
+patients = pd.read_csv('processed/mimic_clean/patients_clean.csv')
+admissions = pd.read_csv('processed/mimic_clean/admissions_clean.csv')
+notes = pd.read_csv('processed/mimic_clean/notes_clean.csv')
 
 merged = admissions.merge(patients, on='SUBJECT_ID', how='left')
 
@@ -100,15 +100,15 @@ def build_triage_input(row):
 merged['triage_input'] = merged.apply(build_triage_input, axis=1)
 
 merged[['SUBJECT_ID', 'HADM_ID', 'triage_input']].to_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/processed/mimic_clean/triage_inputs.csv',
+    'processed/mimic_clean/triage_inputs.csv',
     index=False
 )
 
 from pypdf import PdfReader
 from tqdm import tqdm
 
-pdf_dir = '/content/drive/MyDrive/AI_Triage_Project/data/guidelines/'
-out_dir = '/content/drive/MyDrive/AI_Triage_Project/processed/pdf_chunks/'
+pdf_dir = 'data/guidelines/'
+out_dir = 'processed/pdf_chunks/'
 
 def extract_text(pdf_path):
     reader = PdfReader(pdf_path)
@@ -151,7 +151,7 @@ for pdf in tqdm(os.listdir(pdf_dir)):
         })
 
 pd.DataFrame(all_chunks).to_csv(
-    '/content/drive/MyDrive/AI_Triage_Project/processed/pdf_chunks/guideline_chunks.csv',
+    'processed/pdf_chunks/guideline_chunks.csv',
     index=False
 )
 
@@ -193,7 +193,7 @@ print("Folder structure created ✅")
 
 import pandas as pd
 
-base_dir = "/content/drive/MyDrive/AI_Triage_Project/data"
+base_dir = "AI_Triage_Project/data"
 
 patients = pd.read_csv(f"{base_dir}/PATIENTS.csv")
 admissions = pd.read_csv(f"{base_dir}/ADMISSIONS.csv")
@@ -210,7 +210,7 @@ print("Admissions:", admissions.shape)
 print("Notes:", notes.shape)
 
 notes = pd.read_csv(
-    "/content/drive/MyDrive/AI_Triage_Project/data/NOTEEVENTS.csv",
+    "AI_Triage_Project/data/NOTEEVENTS.csv",
     low_memory=False
 )
 
@@ -385,7 +385,7 @@ merged[['SYMPTOMS', 'URGENCY_SCORE', 'URGENCY_LABEL']].sample(5, random_state=42
 from pathlib import Path
 from PyPDF2 import PdfReader
 
-guideline_dir = "/content/drive/MyDrive/AI_Triage_Project/data/guidelines/"
+guideline_dir = "AI_Triage_Project/data/guidelines/"
 pdf_files = list(Path(guideline_dir).glob("*.pdf"))
 
 guidelines = {}
