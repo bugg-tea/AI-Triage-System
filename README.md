@@ -110,6 +110,14 @@ This feedback is:
 - Reflected immediately in the **Feedback Summary** panel
 
 ---
+## 📸 Project Demo
+
+### Gradio Interface
+![Gradio Interface](images/gradio_ui.jpg)
+
+### Sample Output
+![Sample Output](images/sample_output.jpg)
+
 
 
 
